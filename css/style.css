@@ -1,0 +1,162 @@
+body {
+    background-color: white;
+    font-family: Arial, sans-serif;
+}
+
+#tuner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+#tuner-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+#tuner-mode {
+    font-size: 1.4em;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5vh;
+}
+
+#cents-off {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#indicator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+#strings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+
+#turn-on {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+.marker {
+    align-self: center;
+    width: 3px;
+    height: 50px;
+    background-color: red;
+}
+
+#tuner button {
+    padding: 1em 2em;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: white;
+    color: #540bff;
+    border: 1px solid #cecece;
+    border-radius: 30px;
+    margin: 0vh 5vh;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#tuner button.disabled {
+    padding: 1em 2em;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: white;
+    color: grey;
+    border: 1px solid #cecece;
+    border-radius: 30px;
+    margin: 0vh 5vh;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#tuner button:hover {
+    background-color: lightgray;
+}
+
+
+
+.circular-button {
+    margin: 0 0.1vh;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+    color: black;
+    text-align: center;
+    line-height: 60px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    border: 3px solid red;
+    /* added border property */
+    outline: none;
+}
+
+@media only screen and (min-width: 518px) {
+    .circular-button {
+        margin: 0 1vh;
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: white;
+        color: black;
+        text-align: center;
+        line-height: 60px;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+        border: 3px solid red;
+        /* added border property */
+        outline: none;
+    }
+
+}
+
+.circular-button:hover {
+    background-color: lightgray;
+}
+
+.circular-button-clicked {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+    background-color: white;
+}

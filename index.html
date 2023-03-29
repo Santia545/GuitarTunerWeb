@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Guitar Tuner</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/guitartuner.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="js/yin.js"></script>
+</head>
+
+<body>
+    <div id="tuner">
+        <div id="tuner-options">
+            <button id="switch-tuning-mode">Switch Tuning Mode</button>
+            <button id="switch-tuning">Switch Tuning</button>
+        </div>
+        <div id="tuner-mode">AUTOMATIC MODE</div>
+        <div id="cents-off"></div>
+        <div id="indicator">
+            <div class="marker"></div>
+        </div>
+        <div id="strings">
+            <!--El valor de la nota debe de venir del Modelo de cshtml-->
+            <!--Ejem> <div class="circular-button" id="0">@Model.Note</div>-->
+            <div class="circular-button" id="0" name="string-0">E</div>
+            <div class="circular-button" id="1" name="string-1">A</div>
+            <div class="circular-button" id="2" name="string-2">D</div>
+            <div class="circular-button" id="3" name="string-3">G</div>
+            <div class="circular-button" id="4" name="string-4">B</div>
+            <div class="circular-button" id="5" name="string-5">E</div>
+        </div>
+        <div id="turn-on">
+            <button id="start-tuning">Give microphone access</button>
+        </div>
+    </div>
+    <script src="js/inputs.js"></script>
+
+</body>
+
+</html>
