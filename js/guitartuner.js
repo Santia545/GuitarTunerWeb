@@ -32,10 +32,11 @@ class GuitarTuner {
         var microphoneNode = audioContext.createMediaStreamSource(stream);
 
         var analyser = audioContext.createAnalyser()
-        analyser.fftSize = Math.pow(2, 13)
-        analyser.smoothingTimeConstant = 0.8;
+        //analyser.fftSize = 2048// 2^11
+        analyser.fftSize = 4096// 2^12
+
         var gainNode = audioContext.createGain();
-        gainNode.gain.value = 3;
+        gainNode.gain.value =1.5;
         gainNode.connect(analyser);
         var lowPassFilter1 = audioContext.createBiquadFilter();
         var lowPassFilter2 = audioContext.createBiquadFilter();
