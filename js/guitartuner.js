@@ -34,7 +34,7 @@ class GuitarTuner {
         var analyser = audioContext.createAnalyser()
         //analyser.fftSize = 2048// 2^11
         //analyser.fftSize = 4096// 2^12
-        analyser.fftSize = 8192// 2^13
+        analyser.fftSize = 16384// 2^13
 
 
         var gainNode = audioContext.createGain();
@@ -44,25 +44,24 @@ class GuitarTuner {
         var highPassFilter1 = audioContext.createBiquadFilter();
         var highPassFilter2 = audioContext.createBiquadFilter();
         lowPassFilter1.Q.value = 0;
-        lowPassFilter1.frequency.value = 4200;
+        lowPassFilter1.frequency.value = 20000;
         lowPassFilter1.type = "lowpass";
         lowPassFilter2.Q.value = 0;
-        lowPassFilter2.frequency.value = 4200;
+        lowPassFilter2.frequency.value = 20000;
         lowPassFilter2.type = "lowpass";
         highPassFilter1.Q.value = 0;
-        highPassFilter1.frequency.value = 45;
+        highPassFilter1.frequency.value = 0;
         highPassFilter1.type = "highpass";
         highPassFilter2.Q.value = 0;
-        highPassFilter2.frequency.value = 45;
+        highPassFilter2.frequency.value = 0;
         highPassFilter2.type = "highpass";
-        gainNode.gain.value = 4;
+        gainNode.gain.value = 1;
         microphoneNode.connect(lowPassFilter1);
         lowPassFilter1.connect(lowPassFilter2);
         lowPassFilter2.connect(highPassFilter1);
         highPassFilter1.connect(highPassFilter2);
         highPassFilter2.connect(gainNode);
         gainNode.connect(analyser);
-        gainNode.connect(audioContext.destination);
         //analyser.connect(audioContext.destination);
 
         var sampleRate = audioContext.sampleRate
@@ -88,8 +87,6 @@ class GuitarTuner {
                 }
             }
         }
-        var mediaStreamSource = audioContext.createMediaStreamSource(stream);
-        mediaStreamSource.connect(analyser);
         requestAnimationFrame(step);
     }
     static getClosestString(frequency) {
