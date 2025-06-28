@@ -69,6 +69,19 @@ class GuitarTuner {
         function step() {
             requestAnimationFrame(step);
             analyser.getFloatTimeDomainData(data);
+
+            let sumSquares = 0;
+            for (let i = 0; i < data.length; i++) {
+                sumSquares += data[i] * data[i];
+            }
+            let rms = Math.sqrt(sumSquares / data.length);
+
+            console.log("Loudness (RMS):", rms);
+
+            if (rms < 0.01) {
+                return;
+            }
+
             var pitchInHz = window.yin(data, sampleRate);
 
             if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz) {
