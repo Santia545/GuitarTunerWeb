@@ -34,7 +34,7 @@ class GuitarTuner {
         var analyser = audioContext.createAnalyser()
         //analyser.fftSize = 2048// 2^11
         //analyser.fftSize = 4096// 2^12
-        analyser.fftSize = 16384// 2^13
+        analyser.fftSize = 8192// 2^13
 
 
         var gainNode = audioContext.createGain();
@@ -55,7 +55,7 @@ class GuitarTuner {
         highPassFilter2.Q.value = 0;
         highPassFilter2.frequency.value = 0;
         highPassFilter2.type = "highpass";
-        gainNode.gain.value = 1;
+        gainNode.gain.value = 2;
         microphoneNode.connect(lowPassFilter1);
         lowPassFilter1.connect(lowPassFilter2);
         lowPassFilter2.connect(highPassFilter1);
@@ -67,25 +67,24 @@ class GuitarTuner {
         var sampleRate = audioContext.sampleRate
         var data = new Float32Array(analyser.fftSize)
         function step() {
-            if (GuitarTuner.mediaStream) {
-                requestAnimationFrame(step);
-                analyser.getFloatTimeDomainData(data);
-                var pitchInHz = window.yin(data, sampleRate);
+            requestAnimationFrame(step);
+            analyser.getFloatTimeDomainData(data);
+            var pitchInHz = window.yin(data, sampleRate);
 
-                if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz) {
-                    console.log("Fuera del rango " + pitchInHz);
-                    return;
-                }
-                console.log("Dentro del rango" + pitchInHz);
-                var stringIndex;
-                if (GuitarTuner.getTuningMode() == 0) {
-                    stringIndex = GuitarTuner.getClosestString(pitchInHz);
-                    GuitarTuner.setTuningString(stringIndex, GuitarTuner.getCentsOff(pitchInHz, GuitarTuner.stringArray[stringIndex]));
-                } else if (GuitarTuner.getTuningMode() == 1) {
-                    stringIndex = GuitarTuner.getSelectedString();
-                    GuitarTuner.setTuningString(stringIndex, GuitarTuner.getCentsOff(pitchInHz, GuitarTuner.stringArray[stringIndex]));
-                }
+            if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz) {
+                console.log(pitchInHz);
+                return;
             }
+            console.log(pitchInHz);
+            var stringIndex;
+            if (GuitarTuner.getTuningMode() == 0) {
+                stringIndex = GuitarTuner.getClosestString(pitchInHz);
+                GuitarTuner.setTuningString(stringIndex, GuitarTuner.getCentsOff(pitchInHz, GuitarTuner.stringArray[stringIndex]));
+            } else if (GuitarTuner.getTuningMode() == 1) {
+                stringIndex = GuitarTuner.getSelectedString();
+                GuitarTuner.setTuningString(stringIndex, GuitarTuner.getCentsOff(pitchInHz, GuitarTuner.stringArray[stringIndex]));
+            }
+
         }
         requestAnimationFrame(step);
     }
