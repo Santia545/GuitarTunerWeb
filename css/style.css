@@ -14,6 +14,7 @@ body {
 
 #tuner-options {
     display: flex;
+    gap: 3vw;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -76,41 +77,46 @@ body {
 }
 
 #tuner button {
-    padding: 1em 2em;
+    padding: 20px 20px;
     font-size: 1.2em;
     font-weight: bold;
     background-color: white;
     color: #540bff;
     border: 1px solid #cecece;
     border-radius: 30px;
-    margin: 0vh 5vh;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.2s ease-in-out;
 }
 
 #tuner button.disabled {
-    padding: 1em 2em;
-    font-size: 1.2em;
-    font-weight: bold;
     background-color: white;
     color: grey;
-    border: 1px solid #cecece;
-    border-radius: 30px;
-    margin: 0vh 5vh;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.2s ease-in-out;
 }
 
 #tuner button:hover {
     background-color: lightgray;
 }
 
-
+button#mic-setings {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: white;
+    color: #540bff;
+    border: 1px solid #cecece;
+    border-radius: 30px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out;
+}
 
 .circular-button {
-    margin: 0 0.1vh;
+    margin: 0 0.5vw;
     display: inline-block;
     width: 60px;
     height: 60px;
@@ -129,27 +135,14 @@ body {
     outline: none;
 }
 
-@media only screen and (min-width: 518px) {
+@media (max-width: 518px) {
     .circular-button {
-        margin: 0 1vh;
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: white;
-        color: black;
-        text-align: center;
-        line-height: 60px;
-        font-size: 1.2em;
-        font-weight: bold;
-        text-decoration: none;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-        border: 3px solid red;
-        /* added border property */
-        outline: none;
+        margin: 0 0.7vw;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 1em;
     }
-
 }
 
 .circular-button:hover {
