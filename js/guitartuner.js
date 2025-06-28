@@ -33,11 +33,12 @@ class GuitarTuner {
 
         var analyser = audioContext.createAnalyser()
         //analyser.fftSize = 2048// 2^11
-        analyser.fftSize = 4096// 2^12
+        //analyser.fftSize = 4096// 2^12
+        analyser.fftSize = 8192// 2^13
+
 
         var gainNode = audioContext.createGain();
-        gainNode.gain.value =1.5;
-        gainNode.connect(analyser);
+
         var lowPassFilter1 = audioContext.createBiquadFilter();
         var lowPassFilter2 = audioContext.createBiquadFilter();
         var highPassFilter1 = audioContext.createBiquadFilter();
@@ -54,19 +55,23 @@ class GuitarTuner {
         highPassFilter2.Q.value = 0;
         highPassFilter2.frequency.value = 45;
         highPassFilter2.type = "highpass";
+        gainNode.gain.value = 4;
         microphoneNode.connect(lowPassFilter1);
         lowPassFilter1.connect(lowPassFilter2);
         lowPassFilter2.connect(highPassFilter1);
         highPassFilter1.connect(highPassFilter2);
         highPassFilter2.connect(gainNode);
+        gainNode.connect(analyser);
+        gainNode.connect(audioContext.destination);
+        //analyser.connect(audioContext.destination);
+
         var sampleRate = audioContext.sampleRate
         var data = new Float32Array(analyser.fftSize)
-        //HERE PITCH GETS DETECTED 
         function step() {
             if (GuitarTuner.mediaStream) {
-                requestAnimationFrame(step)
-                analyser.getFloatTimeDomainData(data)
-                var pitchInHz = window.yin(data, sampleRate)
+                requestAnimationFrame(step);
+                analyser.getFloatTimeDomainData(data);
+                var pitchInHz = window.yin(data, sampleRate);
 
                 if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz) {
                     console.log("Fuera del rango " + pitchInHz);
@@ -82,11 +87,10 @@ class GuitarTuner {
                     GuitarTuner.setTuningString(stringIndex, GuitarTuner.getCentsOff(pitchInHz, GuitarTuner.stringArray[stringIndex]));
                 }
             }
-            //if no freq is detected it returns the lowest bin energy 
         }
-        var mediaStreamSource = audioContext.createMediaStreamSource(stream)
-        mediaStreamSource.connect(analyser)
-        requestAnimationFrame(step)
+        var mediaStreamSource = audioContext.createMediaStreamSource(stream);
+        mediaStreamSource.connect(analyser);
+        requestAnimationFrame(step);
     }
     static getClosestString(frequency) {
         var index = 0;

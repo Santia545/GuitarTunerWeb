@@ -30,7 +30,7 @@ document.getElementById("start-tuning").onclick =
             var button = $("#start-tuning");
             button.toggleClass("disabled");
             button.prop('disabled', false);
-            alert("Couldnt acces microphone");
+            alert("Couldnt access microphone");
         }
         var constraints = {
             audio: true,
