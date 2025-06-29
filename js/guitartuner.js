@@ -86,7 +86,8 @@ class GuitarTuner {
     }
     static setTuningString(tuningString, cents) {
         this.tuningString = tuningString;
-        var color;
+        let color;
+        let text;
         $('#cents-off').text(Number(cents).toFixed(2) + " cents");
         if (Math.abs(cents) > 10) {
             color = "red";
@@ -96,18 +97,21 @@ class GuitarTuner {
             color = "green";
         }
         $(".marker").css('background-color', color);
-        var margin = GuitarTuner.map(cents);
-        var direction;
-        var cleanDirection;
+        let margin = GuitarTuner.map(cents);
+        let direction;
+        let cleanDirection;
         if (cents > 0) {
+            text = "Too sharp, Loose the string";
             cleanDirection = "margin-right";
             direction = "margin-left";
         } else {
             cleanDirection = "margin-left";
+            text = "Too flat, Tighten the string";
             direction = "margin-right";
         }
+        $('#string-indicator').text(color === "green" ? "Ok" : text);
         $(".circular-button-clicked").toggleClass("circular-button-clicked");
-        var currentStringButton = $('div[name="string-' + tuningString + '"]');
+        let currentStringButton = $('div[name="string-' + tuningString + '"]');
         currentStringButton.css('border-color', color);
         currentStringButton.toggleClass("circular-button-clicked");
         $("#indicator").css(cleanDirection, '');
