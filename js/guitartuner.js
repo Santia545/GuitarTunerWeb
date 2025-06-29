@@ -87,7 +87,7 @@ class GuitarTuner {
     static setTuningString(tuningString, cents) {
         this.tuningString = tuningString;
         var color;
-        $('#cents-off').text(Number(cents).toFixed(2));
+        $('#cents-off').text(Number(cents).toFixed(2) + " cents");
         if (Math.abs(cents) > 10) {
             color = "red";
         } else if (Math.abs(cents) > 5) {
