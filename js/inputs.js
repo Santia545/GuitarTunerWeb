@@ -108,16 +108,30 @@ document.getElementById("start-tuning").onclick =
             console.log("DEBUG1: Couldn't get microphone input: " + e)
         }
     };
-document.getElementById("switch-tuning").onclick =
-    function () {
-        $('div[name="string-0"]').text('Eb');
-        $('div[name="string-1"]').text('Ab');
-        $('div[name="string-2"]').text('Db');
-        $('div[name="string-3"]').text('Gb');
-        $('div[name="string-4"]').text('Bb');
-        $('div[name="string-5"]').text('Eb');
-        GuitarTuner.stringArray = [77.78, 103.83, 138.59, 185.00, 233.08, 311.13, 440];
+document.getElementById("switch-tuning").onclick = () => {
+    document.getElementById("modal-tunings").style.visibility = "visible";
+    let tuningList = document.getElementById("tuning-list");
+    tuningList.innerHTML = "";
+    tunings.forEach(tuning => {
+        let option = document.createElement("option");
+        option.value = tuning.tuningId;
+        option.textContent = tuning.title;
+        tuningList.appendChild(option);
+    });
+    tuningList.onchange = ({ target }) => {
+        const selectedTuning = tunings.find(t => t.tuningId == target.value);
+        if (selectedTuning) {
+            GuitarTuner.stringArray = JSON.parse(selectedTuning.frequencies.replace(/[a-zA-Z]*#?\s*/g, ""));
+            let stringNames = selectedTuning.frequencies.replace(/[\[\]0-9\.\s]/g, "").split(",");
+            stringNames.forEach((element, index) => {
+                $(`div[name="string-${index}"]`).text(element);
+            });
+
+            document.getElementById("modal-tunings").style.visibility = "hidden";
+        }
     };
+}
+
 document.getElementById("switch-tuning-mode").onclick =
     function () {
         var index = GuitarTuner.getTuningMode();
@@ -186,6 +200,37 @@ const successCallback = (stream) => {
     calculateRMS();
 }
 
-
+const tunings = [
+    {
+        frequencies: "[E 82.41, A 110.00, D 146.83, G 196.00, B 246.94, E 329.63, A 440]",
+        title: "E Standard ",
+        "tuningId": -1
+    },
+    {
+        frequencies: "[Eb 77.78, Ab 103.83, Db 138.59, Gb 185.00, Bb 233.08, Eb 311.13, A 440]",
+        title: "Eb Standard",
+        tuningId: -2
+    },
+    {
+        frequencies: "[D 73.42, G 98.00, C 130.81, F 174.61, A 220.00, D 293.66, A 440]",
+        title: "D Standard",
+        tuningId: -3
+    },
+    {
+        frequencies: "[D 73.42, A 110.00, D 146.83, G 196.00, B 246.94, E 329.63, A 440]",
+        title: "Drop D",
+        tuningId: -4
+    },
+    {
+        frequencies: "[C# 69.30, Ab 103.83, Db 138.59, Gb 185.00, Bb 233.08, Eb 311.13, A 440]",
+        title: "Drop C#",
+        tuningId: -5
+    },
+    {
+        frequencies: "[C 65.41, G 98.00, C 130.81, F 174.61, A 220.00, D 293.66, A 440]",
+        title: "Drop C",
+        tuningId: -6
+    }
+]
 
 
