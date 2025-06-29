@@ -16,7 +16,10 @@ document.getElementById("mic-threshold").oninput = function () {
     document.getElementById("mic-threshold-text").innerText = "Threshold: " + Microphone.threshold + " rms";
 }
 $("#close-modal").mouseup(() => {
-    document.getElementById("modal").style.visibility = "hidden";
+    if (document.getElementById("start-mic").innerText == "Stop Microphone Test") {
+        Ganancia.disconnect(Ganancia.context.destination);
+        document.getElementById("start-mic").innerText = "Start Microphone Test";
+    }
     if (GuitarTuner.getTuningMode() == 2 && modalStream) {
         var tracks = modalStream.getTracks();
         tracks.forEach(function (track) {
@@ -32,6 +35,7 @@ $("#close-modal").mouseup(() => {
         });
         modalStream = null;
     }
+    document.getElementById("modal").style.visibility = "hidden";
 }
 );
 
@@ -59,7 +63,20 @@ $("#mic-settings").mouseup(() => {
         successCallback(GuitarTuner.mediaStream);
     }
 });
+$("#start-mic").mouseup(({ target }) => {
+    if (target.innerText == "Start Microphone Test") {
+        if (Ganancia) {
+            Ganancia.connect(Ganancia.context.destination);
+            target.innerText = "Stop Microphone Test";
+        }
+    } else {
+        if (Ganancia) {
+            Ganancia.disconnect(Ganancia.context.destination);
+            target.innerText = "Start Microphone Test";
+        }
+    }
 
+});
 $(".circular-button")
     .mouseup(function (e) {
         if (GuitarTuner.getTuningMode() == 0) {
@@ -162,6 +179,10 @@ document.getElementById("switch-tuning-mode").onclick =
         }
 
     };
+$("#close-modal-tunings").mouseup(() => {
+    document.getElementById("modal-tunings").style.visibility = "hidden";
+}
+);
 function stopStream() {
     if (GuitarTuner.mediaStream) {
         // Get the tracks from the stream

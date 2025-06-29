@@ -213,6 +213,18 @@ input[type="range"] {
     margin: 5px 0px;
 }
 
+.modal-body button {
+    width: 100%;
+    padding: 10px;
+    background-color: #540bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
 div#volume-indicator {
     width: 100%;
     height: 20px;
