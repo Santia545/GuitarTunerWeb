@@ -3,6 +3,7 @@ var tuningMode = ["AUTOMATIC MODE", "MANUAL MODE", "EAR MODE"];
 let sounds = [];
 var modalStream = null;
 var Ganancia = null;
+let currentTuningId = -1;
 document.getElementById("mic-gain").oninput = function () {
     Microphone.gain = Number(this.value) / 10;
     if (Ganancia) {
@@ -117,9 +118,14 @@ document.getElementById("switch-tuning").onclick = () => {
         option.value = tuning.tuningId;
         option.textContent = tuning.title;
         tuningList.appendChild(option);
+        if (tuning.tuningId == currentTuningId) {
+            option.selected = true;
+        }
     });
+
     tuningList.onchange = ({ target }) => {
         const selectedTuning = tunings.find(t => t.tuningId == target.value);
+        currentTuningId = selectedTuning.tuningId;
         if (selectedTuning) {
             GuitarTuner.stringArray = JSON.parse(selectedTuning.frequencies.replace(/[a-zA-Z]*#?\s*/g, ""));
             let stringNames = selectedTuning.frequencies.replace(/[\[\]0-9\.\s]/g, "").split(",");
