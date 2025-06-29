@@ -13,7 +13,26 @@
 </head>
 
 <body>
-    <button type="button" id="mic-setings">&vellip;</button>
+    <div class="modal" id="modal" style="visibility: hidden;">
+        <div class="modal-content">
+            <button type="button" id="close-modal">&times;</button>
+            <h2>Microphone Settings</h2>
+            <div style="display: flex; flex-direction: column; align-items: start; width: 100%;">
+                <label for="mic-gain">Microphone Gain:</label>
+                <input type="range" id="mic-gain" min="1" max="100" value="1">
+                <label for="mic-threshold">Microphone Threshold:</label>
+                <input type="range" id="mic-threshold" min="1" max="100" value="1">
+                <label for="volume-indicator">Current volume:</label>
+                <div id="volume-indicator">
+                    <div id="volume-bar" ></div>
+                    <div id="volume-text">0%</div>
+                </div>
+            </div>
+            <button style="margin-top: 20px;" type="button" id="allow-mic">Allow Microphone Access</button>
+        </div>
+    </div>
+
+    <button type="button" id="mic-settings">&vellip;</button>
 
     <div id="tuner">
         <div id="tuner-options">

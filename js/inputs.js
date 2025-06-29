@@ -1,6 +1,49 @@
 var previousElement;
 var tuningMode = ["AUTOMATIC MODE", "MANUAL MODE", "EAR MODE"];
 let sounds = [];
+
+$("#close-modal").mouseup(() => document.getElementById("modal").style.visibility = "hidden");
+
+$("#mic-settings").mouseup(() => {
+    document.getElementById("modal").style.visibility = "visible";
+    if (!GuitarTuner.mediaStream) {
+        function errorCallback(err) {
+            alert("Couldn't access microphone");
+        }
+        const successCallback = (stream) => {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioContext.createMediaStreamSource(stream);
+            const analyser = audioContext.createAnalyser();
+            analyser.fftSize = 2048;
+            source.connect(analyser);
+            const dataArray = new Float32Array(analyser.fftSize);
+            function calculateRMS() {
+                analyser.getFloatTimeDomainData(dataArray);
+                let sumSquares = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sumSquares += dataArray[i] * dataArray[i];
+                }
+                const rms = Math.sqrt(sumSquares / dataArray.length);
+                console.log("RMS:", rms);
+                requestAnimationFrame(calculateRMS);
+            }
+            calculateRMS();
+        }
+        try {
+            if (navigator.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(successCallback).catch(errorCallback);
+            }
+            else {
+                let stream = GuitarTuner.mediaStream
+                successCallback(stream)
+            }
+
+        } catch (e) {
+            console.log(" Couldn't get microphone input: " + e);
+        }
+    }
+});
+
 $(".circular-button")
     .mouseup(function (e) {
         if (GuitarTuner.getTuningMode() == 0) {
