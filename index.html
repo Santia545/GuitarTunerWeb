@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/style.css" rel="stylesheet">
+    <script src="js/Microphone.js"></script>
     <script src="js/guitartuner.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="js/yin.js"></script>
@@ -24,11 +25,10 @@
                 <input type="range" id="mic-threshold" min="1" max="100" value="1">
                 <label for="volume-indicator">Current volume:</label>
                 <div id="volume-indicator">
-                    <div id="volume-bar" ></div>
+                    <div id="volume-bar"></div>
                     <div id="volume-text">0%</div>
                 </div>
             </div>
-            <button style="margin-top: 20px;" type="button" id="allow-mic">Allow Microphone Access</button>
         </div>
     </div>
 

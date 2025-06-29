@@ -27,45 +27,13 @@ class GuitarTuner {
     static successCallback(stream) {
         GuitarTuner.mediaStream = stream;
         console.log("Estoy en el callback");
-        window.AudioContext = window.AudioContext || window.webkitAudioContext
-        var audioContext = new AudioContext()
-        var microphoneNode = audioContext.createMediaStreamSource(stream);
+        const {
+            audioContext,
+            analyser
+        } = Microphone.setupAudioChain(stream);
 
-        var analyser = audioContext.createAnalyser()
-        //analyser.fftSize = 2048// 2^11
-        //analyser.fftSize = 4096// 2^12
-        analyser.fftSize = 8192// 2^13
-
-
-        var gainNode = audioContext.createGain();
-
-        var lowPassFilter1 = audioContext.createBiquadFilter();
-        var lowPassFilter2 = audioContext.createBiquadFilter();
-        var highPassFilter1 = audioContext.createBiquadFilter();
-        var highPassFilter2 = audioContext.createBiquadFilter();
-        lowPassFilter1.Q.value = 0;
-        lowPassFilter1.frequency.value = 20000;
-        lowPassFilter1.type = "lowpass";
-        lowPassFilter2.Q.value = 0;
-        lowPassFilter2.frequency.value = 20000;
-        lowPassFilter2.type = "lowpass";
-        highPassFilter1.Q.value = 0;
-        highPassFilter1.frequency.value = 0;
-        highPassFilter1.type = "highpass";
-        highPassFilter2.Q.value = 0;
-        highPassFilter2.frequency.value = 0;
-        highPassFilter2.type = "highpass";
-        gainNode.gain.value = 2;
-        microphoneNode.connect(lowPassFilter1);
-        lowPassFilter1.connect(lowPassFilter2);
-        lowPassFilter2.connect(highPassFilter1);
-        highPassFilter1.connect(highPassFilter2);
-        highPassFilter2.connect(gainNode);
-        gainNode.connect(analyser);
-        //analyser.connect(audioContext.destination);
-
-        var sampleRate = audioContext.sampleRate
-        var data = new Float32Array(analyser.fftSize)
+        var sampleRate = audioContext.sampleRate;
+        var data = new Float32Array(analyser.fftSize);
         function step() {
             requestAnimationFrame(step);
             analyser.getFloatTimeDomainData(data);
@@ -78,7 +46,7 @@ class GuitarTuner {
 
             console.log("Loudness (RMS):", rms);
 
-            if (rms < 0.01) {
+            if (rms < Microphone.threshold) {
                 return;
             }
 
@@ -97,7 +65,6 @@ class GuitarTuner {
                 stringIndex = GuitarTuner.getSelectedString();
                 GuitarTuner.setTuningString(stringIndex, GuitarTuner.getCentsOff(pitchInHz, GuitarTuner.stringArray[stringIndex]));
             }
-
         }
         requestAnimationFrame(step);
     }

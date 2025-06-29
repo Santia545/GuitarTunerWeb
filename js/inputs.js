@@ -1,8 +1,31 @@
 var previousElement;
 var tuningMode = ["AUTOMATIC MODE", "MANUAL MODE", "EAR MODE"];
 let sounds = [];
-
-$("#close-modal").mouseup(() => document.getElementById("modal").style.visibility = "hidden");
+var modalStream = null;
+var Ganancia = null;
+document.getElementById("mic-gain").oninput = function () {
+    Microphone.gain = Number(this.value) / 10;
+    if (Ganancia) {
+        Ganancia.gain.value = Microphone.gain;
+    }
+    //document.getElementById("mic-gain-text").innerText = "Gain: " + this.value;
+}
+document.getElementById("mic-threshold").oninput = function () {
+    Microphone.threshold = Number(this.value);
+    //document.getElementById("mic-gain-text").innerText = "Gain: " + this.value;
+}
+$("#close-modal").mouseup(() => {
+    document.getElementById("modal").style.visibility = "hidden";
+    if (GuitarTuner.getTuningMode() == 2 && modalStream) {
+        var tracks = modalStream.getTracks();
+        tracks.forEach(function (track) {
+            track.stop();
+        });
+        modalStream = null;
+        alert("Microphone access removed");
+    }
+}
+);
 
 $("#mic-settings").mouseup(() => {
     document.getElementById("modal").style.visibility = "visible";
@@ -10,37 +33,22 @@ $("#mic-settings").mouseup(() => {
         function errorCallback(err) {
             alert("Couldn't access microphone");
         }
-        const successCallback = (stream) => {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioContext.createMediaStreamSource(stream);
-            const analyser = audioContext.createAnalyser();
-            analyser.fftSize = 2048;
-            source.connect(analyser);
-            const dataArray = new Float32Array(analyser.fftSize);
-            function calculateRMS() {
-                analyser.getFloatTimeDomainData(dataArray);
-                let sumSquares = 0;
-                for (let i = 0; i < dataArray.length; i++) {
-                    sumSquares += dataArray[i] * dataArray[i];
-                }
-                const rms = Math.sqrt(sumSquares / dataArray.length);
-                console.log("RMS:", rms);
-                requestAnimationFrame(calculateRMS);
-            }
-            calculateRMS();
-        }
+        navigator.getMedia =
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia;
         try {
-            if (navigator.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(successCallback).catch(errorCallback);
+            if (navigator.getMedia) {
+                navigator.getMedia({ audio: true, video: false }, successCallback, errorCallback);
             }
             else {
-                let stream = GuitarTuner.mediaStream
-                successCallback(stream)
+                alert("Your browser does not support microphone access");
             }
-
         } catch (e) {
             console.log(" Couldn't get microphone input: " + e);
         }
+    } else {
+        successCallback(modalStream);
     }
 });
 
@@ -79,12 +87,16 @@ document.getElementById("start-tuning").onclick =
             audio: true,
             video: false
         }
+        navigator.getMedia =
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia;
         try {
-            if (navigator.getUserMedia) {
-                navigator.getUserMedia(constraints, GuitarTuner.successCallback, errorCallback);
+            if (navigator.getMedia) {
+                navigator.getMedia(constraints, GuitarTuner.successCallback, errorCallback);
+            } else {
+                alert("Your browser does not support microphone access");
             }
-            else
-                navigator.mediaDevices.getUserMedia(constraints).then(GuitarTuner.successCallback).catch(errorCallback);
         } catch (e) {
             console.log("DEBUG1: Couldn't get microphone input: " + e)
         }
@@ -144,7 +156,28 @@ function stopPlayingSounds() {
         sounds = [];
     }
 }
-
+const successCallback = (stream) => {
+    modalStream = stream;
+    const {
+        analyser,
+        gainNode
+    } = Microphone.setupAudioChain(stream);
+    Ganancia = gainNode;
+    const dataArray = new Float32Array(analyser.fftSize);
+    function calculateRMS() {
+        analyser.getFloatTimeDomainData(dataArray);
+        let sumSquares = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+            sumSquares += dataArray[i] * dataArray[i];
+        }
+        const rms = Math.sqrt(sumSquares / dataArray.length);
+        console.log("RMS:", rms);
+        document.getElementById("volume-text").innerText = (rms * 100).toFixed(2) + "%";
+        document.getElementById("volume-bar").style.width = (rms * 100) + "%";
+        requestAnimationFrame(calculateRMS);
+    }
+    calculateRMS();
+}
 
 
 
