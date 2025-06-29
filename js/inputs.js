@@ -8,11 +8,11 @@ document.getElementById("mic-gain").oninput = function () {
     if (Ganancia) {
         Ganancia.gain.value = Microphone.gain;
     }
-    //document.getElementById("mic-gain-text").innerText = "Gain: " + this.value;
+    document.getElementById("mic-gain-text").innerText = "Gain: " + Microphone.gain;
 }
 document.getElementById("mic-threshold").oninput = function () {
-    Microphone.threshold = Number(this.value);
-    //document.getElementById("mic-gain-text").innerText = "Gain: " + this.value;
+    Microphone.threshold = Number(this.value) / 100;
+    document.getElementById("mic-threshold-text").innerText = "Threshold: " + Microphone.threshold + " rms";
 }
 $("#close-modal").mouseup(() => {
     document.getElementById("modal").style.visibility = "hidden";
@@ -23,6 +23,13 @@ $("#close-modal").mouseup(() => {
         });
         modalStream = null;
         alert("Microphone access removed");
+    }
+    if (modalStream && !GuitarTuner.mediaStream) {
+        var tracks = modalStream.getTracks();
+        tracks.forEach(function (track) {
+            track.stop();
+        });
+        modalStream = null;
     }
 }
 );
@@ -48,7 +55,7 @@ $("#mic-settings").mouseup(() => {
             console.log(" Couldn't get microphone input: " + e);
         }
     } else {
-        successCallback(modalStream);
+        successCallback(GuitarTuner.mediaStream);
     }
 });
 
@@ -171,9 +178,9 @@ const successCallback = (stream) => {
             sumSquares += dataArray[i] * dataArray[i];
         }
         const rms = Math.sqrt(sumSquares / dataArray.length);
-        console.log("RMS:", rms);
-        document.getElementById("volume-text").innerText = (rms * 100).toFixed(2) + "%";
-        document.getElementById("volume-bar").style.width = (rms * 100) + "%";
+        document.getElementById("volume-text").innerText = (rms).toFixed(2) + "rms";
+        let width = (rms * 100);
+        document.getElementById("volume-bar").style.width = width > 100 ? "100%" : width + "%";
         requestAnimationFrame(calculateRMS);
     }
     calculateRMS();

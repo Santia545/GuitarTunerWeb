@@ -20,13 +20,17 @@
             <h2>Microphone Settings</h2>
             <div style="display: flex; flex-direction: column; align-items: start; width: 100%;">
                 <label for="mic-gain">Microphone Gain:</label>
-                <input type="range" id="mic-gain" min="1" max="100" value="1">
+                <input type="range" id="mic-gain" min="10" max="100" value="10">
                 <label for="mic-threshold">Microphone Threshold:</label>
                 <input type="range" id="mic-threshold" min="1" max="100" value="1">
                 <label for="volume-indicator">Current volume:</label>
                 <div id="volume-indicator">
                     <div id="volume-bar"></div>
-                    <div id="volume-text">0%</div>
+                    <div id="volume-text">0rms</div>
+                </div>
+                <div style="text-align: start;">
+                    <p id="mic-gain-text">Gain: 1 </p>
+                    <p id="mic-threshold-text">Threshold: 0.01 rms</p>
                 </div>
             </div>
         </div>

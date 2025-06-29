@@ -44,8 +44,6 @@ class GuitarTuner {
             }
             let rms = Math.sqrt(sumSquares / data.length);
 
-            console.log("Loudness (RMS):", rms);
-
             if (rms < Microphone.threshold) {
                 return;
             }
@@ -102,13 +100,11 @@ class GuitarTuner {
         var direction;
         var cleanDirection;
         if (cents > 0) {
-            console.log("derecha");
             cleanDirection = "margin-right";
             direction = "margin-left";
         } else {
             cleanDirection = "margin-left";
             direction = "margin-right";
-            console.log("izq");
         }
         $(".circular-button-clicked").toggleClass("circular-button-clicked");
         var currentStringButton = $('div[name="string-' + tuningString + '"]');
