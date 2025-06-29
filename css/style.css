@@ -169,15 +169,34 @@ button#mic-settings:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    visibility: hidden;
+    box-sizing: border-box;
 }
 
 .modal-content {
+    box-sizing: border-box;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     width: 300px;
     text-align: center;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    max-height: 100vh;
+    overflow: auto;
 }
 
 input[type="range"] {

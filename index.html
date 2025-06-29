@@ -19,9 +19,11 @@
 <body>
     <div class="modal" id="modal" style="visibility: hidden;">
         <div class="modal-content">
-            <button type="button" id="close-modal">&times;</button>
-            <h2>Microphone Settings</h2>
-            <div style="display: flex; flex-direction: column; align-items: start; width: 100%;">
+            <div class="modal-header">
+                <h2>Microphone Settings</h2>
+                <button type="button" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
                 <label for="mic-gain">Microphone Gain:</label>
                 <input type="range" id="mic-gain" min="10" max="100" value="10">
                 <label for="mic-threshold">Microphone Threshold:</label>
