@@ -48,7 +48,21 @@ class GuitarTuner {
                 return;
             }
 
-            var pitchInHz = window.yin(data, sampleRate);
+            //var pitchInHz = window.yin(data, sampleRate);
+            let crepe = Crepe.getInstance(audioContext, stream, () => {
+                console.log("Crepe model loaded");
+            });
+            crepe.getPitch((err, pitch) => {
+                if (err) {
+                    console.error("Error getting pitch:", err);
+                    return;
+                }
+                if (pitch) {
+                    pitchInHz = pitch;
+                } else {
+                    pitchInHz = 0;
+                }
+            });
 
             if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz) {
                 console.log(pitchInHz);
