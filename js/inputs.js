@@ -4,6 +4,14 @@ let sounds = [];
 var modalStream = null;
 var Ganancia = null;
 let currentTuningId = -1;
+let constraints = {
+    audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: true
+    },
+    video: false
+}
 document.getElementById("mic-gain").oninput = function () {
     Microphone.gain = Number(this.value) / 10;
     if (Ganancia) {
@@ -51,7 +59,7 @@ $("#mic-settings").mouseup(() => {
             navigator.mozGetUserMedia;
         try {
             if (navigator.getMedia) {
-                navigator.getMedia({ audio: true, video: false }, successCallback, errorCallback);
+                navigator.getMedia(constraints, successCallback, errorCallback);
             }
             else {
                 alert("Your browser does not support microphone access");
@@ -107,10 +115,6 @@ document.getElementById("start-tuning").onclick =
             button.toggleClass("disabled");
             button.prop('disabled', false);
             alert("Couldnt access microphone");
-        }
-        var constraints = {
-            audio: true,
-            video: false
         }
         navigator.getMedia =
             navigator.getUserMedia ||
