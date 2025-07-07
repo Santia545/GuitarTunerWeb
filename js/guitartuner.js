@@ -1,4 +1,5 @@
 class GuitarTuner {
+    static pitchDetection = "crepe"; // yin or crepe
     static tuningMode = 0;
     static tuningString = 0;
 
@@ -34,6 +35,7 @@ class GuitarTuner {
         var sampleRate = audioContext.sampleRate;
         var data = new Float32Array(analyser.fftSize);
         let pitchInHz = 0;
+        let confidence = 0;
         function step() {
             requestAnimationFrame(step);
             analyser.getFloatTimeDomainData(data);
@@ -48,23 +50,18 @@ class GuitarTuner {
                 return;
             }
 
-            //var pitchInHz = window.yin(data, sampleRate);
-            let crepe = Crepe.getInstance(audioContext, stream, () => {
-                console.log("Crepe model loaded");
-            });
-            crepe.getPitch((err, pitch) => {
-                if (err) {
-                    console.error("Error getting pitch:", err);
-                    return;
-                }
-                if (pitch) {
-                    pitchInHz = pitch;
-                } else {
-                    pitchInHz = 0;
-                }
-            });
+            if (GuitarTuner.pitchDetection === "yin") {
+                pitchInHz = window.yin(data, sampleRate);
+                confidence = 1;
+            } else {
+                let crepe = Crepe.getInstance(audioContext, stream, () => {
+                    console.log("Crepe model loaded");
+                });
+                pitchInHz = crepe.frequency ?? 0;
+                confidence = crepe.results.confidence ?? 0;
+            }
 
-            if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz) {
+            if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz || confidence < 0.65) {
                 console.log(pitchInHz);
                 return;
             }

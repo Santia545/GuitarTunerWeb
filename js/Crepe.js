@@ -6,7 +6,22 @@ class Crepe {
         if (Crepe.#instance) {
             throw new Error("Use Crepe.getInstance() instead.");
         }
-        Crepe.#instance = ml5.pitchDetection(this.modelURL, audioContext, stream, onReady);
+        const snackbar = document.createElement("div");
+        snackbar.id = "snackbar";
+        snackbar.style.position = "fixed";
+        snackbar.style.bottom = "20px";
+        snackbar.style.right = "20px";
+        snackbar.style.color = "#ffff";
+        snackbar.style.backgroundColor = "gray";
+        snackbar.style.padding = "15px";
+        snackbar.style.borderRadius = "3px";
+        snackbar.style.zIndex = "1000";
+        document.body.appendChild(snackbar);
+        snackbar.textContent = "Loading Crepe model...";
+        Crepe.#instance = ml5.pitchDetection(this.modelURL, audioContext, stream, () => {
+            document.body.removeChild(snackbar);
+            onReady();
+        });
     }
 
     static getInstance() {
