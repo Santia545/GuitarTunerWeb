@@ -6,7 +6,7 @@ class Crepe {
         if (Crepe.#instance) {
             throw new Error("Use Crepe.getInstance() instead.");
         }
-        Crepe.#instance = ml5.pitchDetection(modelURL, audioContext, stream, onReady);
+        Crepe.#instance = ml5.pitchDetection(this.modelURL, audioContext, stream, onReady);
     }
 
     static getInstance() {
@@ -15,9 +15,9 @@ class Crepe {
         }
         return Crepe.#instance;
     }
-    static getInstance(modelURL, audioContext, stream, onReady) {
+    static getInstance(audioContext, stream, onReady) {
         if (!Crepe.#instance) {
-            new Crepe(modelURL, audioContext, stream, onReady);
+            new Crepe(audioContext, stream, onReady);
         }
         return Crepe.#instance;
     }

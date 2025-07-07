@@ -1,6 +1,5 @@
 class GuitarTuner {
     static tuningMode = 0;
-
     static tuningString = 0;
 
     static STANDAR_TUNING_FREQ = [82.41, 110.00, 146.83, 196.00, 246.94, 329.63, 440];
@@ -34,6 +33,7 @@ class GuitarTuner {
 
         var sampleRate = audioContext.sampleRate;
         var data = new Float32Array(analyser.fftSize);
+        let pitchInHz = 0;
         function step() {
             requestAnimationFrame(step);
             analyser.getFloatTimeDomainData(data);
