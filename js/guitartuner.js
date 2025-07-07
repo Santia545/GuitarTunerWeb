@@ -1,5 +1,5 @@
 class GuitarTuner {
-    static pitchDetection = "crepe"; // yin or crepe
+    static pitchDetection = "crepe"; 
     static tuningMode = 0;
     static tuningString = 0;
 
@@ -58,10 +58,10 @@ class GuitarTuner {
                     console.log("Crepe model loaded");
                 });
                 pitchInHz = crepe.frequency ?? 0;
-                confidence = crepe.results.confidence ?? 0;
+                confidence = crepe.results?.confidence ?? 0;
             }
 
-            if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz || confidence < 0.65) {
+            if (Number(pitchInHz) > 1000 || Number(pitchInHz) < 47 || !pitchInHz || confidence < 0.66) {
                 console.log(pitchInHz);
                 return;
             }
