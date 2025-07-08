@@ -16,22 +16,22 @@ class Microphone {
 
         const lowPassFilter1 = audioContext.createBiquadFilter();
         lowPassFilter1.Q.value = 0;
-        lowPassFilter1.frequency.value = 20000;
+        lowPassFilter1.frequency.value = 4200;
         lowPassFilter1.type = "lowpass";
 
         const lowPassFilter2 = audioContext.createBiquadFilter();
         lowPassFilter2.Q.value = 0;
-        lowPassFilter2.frequency.value = 20000;
+        lowPassFilter2.frequency.value = 4200;
         lowPassFilter2.type = "lowpass";
 
         const highPassFilter1 = audioContext.createBiquadFilter();
         highPassFilter1.Q.value = 0;
-        highPassFilter1.frequency.value = 0;
+        highPassFilter1.frequency.value = 46;
         highPassFilter1.type = "highpass";
 
         const highPassFilter2 = audioContext.createBiquadFilter();
         highPassFilter2.Q.value = 0;
-        highPassFilter2.frequency.value = 0;
+        highPassFilter2.frequency.value = 46;
         highPassFilter2.type = "highpass";
 
         microphoneNode.connect(lowPassFilter1);
