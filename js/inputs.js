@@ -56,17 +56,8 @@ $("#mic-settings").mouseup(() => {
         function errorCallback(err) {
             alert("Couldn't access microphone");
         }
-        navigator.getMedia =
-            navigator.getUserMedia ||
-            navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia;
         try {
-            if (navigator.getMedia) {
-                navigator.getMedia(constraints, successCallback, errorCallback);
-            }
-            else {
-                alert("Your browser does not support microphone access");
-            }
+            getUserMediaCompat(constraints, successCallback, errorCallback);
         } catch (e) {
             console.log(" Couldn't get microphone input: " + e);
         }
@@ -119,16 +110,8 @@ document.getElementById("start-tuning").onclick =
             button.prop('disabled', false);
             alert("Couldnt access microphone");
         }
-        navigator.getMedia =
-            navigator.getUserMedia ||
-            navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia;
         try {
-            if (navigator.getMedia) {
-                navigator.getMedia(constraints, GuitarTuner.successCallback, errorCallback);
-            } else {
-                alert("Your browser does not support microphone access");
-            }
+            getUserMediaCompat(constraints, GuitarTuner.successCallback, errorCallback);
         } catch (e) {
             console.log("DEBUG1: Couldn't get microphone input: " + e)
         }
@@ -232,6 +215,22 @@ const successCallback = (stream) => {
         requestAnimationFrame(calculateRMS);
     }
     calculateRMS();
+}
+
+function getUserMediaCompat(constraints, successCallback, errorCallback) {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia(constraints).then(successCallback).catch(errorCallback);
+    } else {
+        const getUserMedia = navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia;
+        if (getUserMedia) {
+            getUserMedia.call(navigator, constraints, successCallback, errorCallback);
+        } else {
+            errorCallback(new Error("Your browser does not support microphone access"));
+        }
+    }
 }
 
 const tunings = [
