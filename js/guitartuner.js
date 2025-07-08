@@ -1,5 +1,5 @@
 class GuitarTuner {
-    static pitchDetection = "crepe"; 
+    static pitchDetection = "yin"; 
     static tuningMode = 0;
     static tuningString = 0;
 

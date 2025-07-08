@@ -22,10 +22,11 @@
     <div class="modal" id="modal" style="visibility: hidden;">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Microphone Settings</h2>
+                <h2>Settings</h2>
                 <button type="button" id="close-modal">&times;</button>
             </div>
             <div class="modal-body">
+                <h3>Microphone Settings:</h3>
                 <label for="mic-gain">Microphone Gain:</label>
                 <input type="range" id="mic-gain" min="10" max="100" value="10">
                 <label for="mic-threshold">Microphone Threshold:</label>
@@ -40,6 +41,12 @@
                     <p id="mic-threshold-text">Threshold: 0.01 rms</p>
                 </div>
                 <button type="button" id="start-mic">Start Microphone Test</button>
+                <h3>Pitch Estimation Algorithm</h3>
+                <label for="pitch-algorithm">Select Algorithm:</label>
+                <select id="algorithm-list">
+                    <option value="yin">Yin</option>
+                    <option value="crepe">Crepe</option>
+                </select>
             </div>
         </div>
     </div>

@@ -23,6 +23,9 @@ document.getElementById("mic-threshold").oninput = function () {
     Microphone.threshold = Number(this.value) / 100;
     document.getElementById("mic-threshold-text").innerText = "Threshold: " + Microphone.threshold + " rms";
 }
+document.getElementById("algorithm-list").onchange = function () {
+    GuitarTuner.pitchDetection = this.value;
+}
 $("#close-modal").mouseup(() => {
     if (document.getElementById("start-mic").innerText == "Stop Microphone Test") {
         Ganancia.disconnect(Ganancia.context.destination);
